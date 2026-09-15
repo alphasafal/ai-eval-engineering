@@ -1,6 +1,24 @@
 # AI Eval Engineering
 
+[![CI](https://github.com/alphasafal/ai-eval-engineering/actions/workflows/ci.yml/badge.svg)](https://github.com/alphasafal/ai-eval-engineering/actions/workflows/ci.yml)
+![Node.js](https://img.shields.io/badge/Node.js-%3E%3D22.12-339933?logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 > Prompt engineering changes behaviour. Eval engineering tells you whether the change actually improved it.
+
+**Deterministic mock benchmark — pipeline demonstration, not a production-LLM benchmark**
+
+| Metric           |  V1 |   V2 |
+| ---------------- | --: | ---: |
+| Pass rate        | 28% |  96% |
+| Action accuracy  | 50% |  96% |
+| Safety pass rate | 70% | 100% |
+| Retry rate       | 26% |   2% |
+
+V2 is more reliable, but not free: it uses roughly 2.9× more tokens and roughly 2.6× the illustrative cost per task. This project exists to make that trade-off measurable. Responses come from a simulated provider; every metric is computed by the harness ([full comparison](#14-v1-vs-v2-comparison)).
+
+[Architecture](docs/architecture.md) · [Eval design](docs/eval-design.md) · [Demo script](docs/demo-script.md) · [LinkedIn demo guide](docs/linkedin-demo.md)
 
 A small reference implementation of the full evaluation loop for an AI agent: dataset → baseline → graders → metrics → failure analysis → A/B comparison → release gate → report.
 
@@ -85,7 +103,7 @@ The last arrow matters most: every production incident should become a new eval 
 
 ## 5. Installation
 
-Requirements: Node.js 20+ and npm.
+Requirements: Node.js 22.12+ and npm.
 
 ```bash
 npm install
@@ -200,7 +218,7 @@ The 50 cases cover happy paths, ambiguous requests, incomplete information, angr
 
 Model graders are non-deterministic and have known biases (verbosity, position, self-preference). Treat their scores as signals, pin the judge model, and validate them against human labels before letting them block a release. In the mock run, V1 averages a semantic score of 4.11 and clears the ≥ 4.0 threshold, even though V1 fails 36 of 50 cases on deterministic checks. That is exactly why a judge score should never be your only gate.
 
-**Human evaluation** is still the ground truth. Use it to label the dataset, audit a sample of judge scores, and review every failure the patterns can't explain.
+**Human evaluation** remains an important reference signal, especially for ambiguous or subjective cases. Use it to label the dataset, calibrate judge rubrics, audit a sample of judge scores, and review failures the automated graders cannot explain.
 
 ## 11. Outcome vs trajectory
 
@@ -321,7 +339,7 @@ Each failed case shows its input, expected and actual labels, and the reason. Pa
 - Multi-turn conversations and stateful tools
 - Dataset versioning and a "promote production failure to eval case" command
 - Cost/quality Pareto view across several models
-- CI example workflow with PR comments
+- CI PR comments that summarize metric deltas and release-gate failures
 
 ## 20. Educational purpose
 
