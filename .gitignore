@@ -1,0 +1,13 @@
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+coverage/
+
+# Generated artifacts (regenerate with `npm run eval`)
+results/*.json
+reports/*.html
+!results/.gitkeep
+!reports/.gitkeep

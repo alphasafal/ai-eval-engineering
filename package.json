@@ -1,0 +1,39 @@
+{
+  "name": "ai-eval-engineering",
+  "version": "1.0.0",
+  "description": "Stop prompt engineering. Start eval engineering. A reference evaluation harness for an AI support agent.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "author": "alphasafal",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alphasafal/ai-eval-engineering.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "eval": "tsx src/cli.ts all",
+    "eval:v1": "tsx src/cli.ts run v1",
+    "eval:v2": "tsx src/cli.ts run v2",
+    "eval:compare": "tsx src/cli.ts compare",
+    "eval:report": "tsx src/cli.ts report",
+    "eval:all": "tsx src/cli.ts all",
+    "eval:ci": "tsx src/cli.ts run v2 --ci",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "chalk": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.5.1",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.0"
+  }
+}
